@@ -1,0 +1,20 @@
+const express = require("express")
+const cors = require("cors")
+const mongoose = require("mongoose")
+const AnimalRouter = require("./routes/Animal.routes")
+const bodyParser = require("body-parser")
+const app = express()
+require("dotenv").config()
+const PORT = process.env.PORT
+app.use(cors())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+app.use('/public', express.static('public'))
+app.use(express.json())
+app.use("/animals", AnimalRouter)
+mongoose.connect(`mongodb+srv://rashadkhll:${process.env.DB_PASSWORD}@cluster0.vllij5v.mongodb.net/`).then(res => {
+    console.log("connected to db")
+})
+app.listen(PORT, () => {
+    console.log("app runnning on 8000")
+})
